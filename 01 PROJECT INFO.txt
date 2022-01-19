@@ -1,6 +1,10 @@
 **Log on to codeastro.com for more projects!**
 
+<<<<<<< HEAD
 **Developed By Akshita Sakshi**
+=======
+**Developed By akshita sakshi
+>>>>>>> f6e6b3a4d8e7ec4f19d654688e7cc4e1761628c3
 
 **Instructions**
 - Install the Requirements: pip install -r requirements.txt
