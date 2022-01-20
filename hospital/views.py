@@ -76,6 +76,25 @@ def doctor_signup_view(request):
         return HttpResponseRedirect('doctorlogin')
     return render(request,'hospital/doctorsignup.html',context=mydict)
 
+def reception_signup_view(request):
+    userForm=forms.ReceptionUserForm()
+    receptionForm=forms.DoctorForm()
+    mydict={'userForm':userForm,'receptionForm':receptionForm}
+    if request.method=='POST':
+        userForm=forms.receptionUserForm(request.POST)
+        receptionForm=forms.ReceptionForm(request.POST,request.FILES)
+        if userForm.is_valid() and receptionForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+            reception=receptionForm.save(commit=False)
+            reception.user=user
+            reception=reception.save()
+            my_reception_group = Group.objects.get_or_create(name='RECEPTION')
+            my_reception_group[0].user_set.add(user)
+        return HttpResponseRedirect('receptionlogin')
+    return render(request,'hospital/receptionsignup.html',context=mydict)
+
 
 def patient_signup_view(request):
     userForm=forms.PatientUserForm()

@@ -5,6 +5,8 @@ class DoctorAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Doctor, DoctorAdmin)
 
+
+
 class PatientAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Patient, PatientAdmin)
