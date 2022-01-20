@@ -1,11 +1,13 @@
 from django.contrib import admin
-from .models import Doctor,Patient,Appointment,PatientDischargeDetails
+from .models import Doctor,Reception,Patient,Appointment,PatientDischargeDetails
 # Register your models here.
 class DoctorAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Doctor, DoctorAdmin)
 
-
+class ReceptionAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Reception, ReceptionAdmin)
 
 class PatientAdmin(admin.ModelAdmin):
     pass

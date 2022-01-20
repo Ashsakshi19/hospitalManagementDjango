@@ -10,6 +10,9 @@ departments=[('Cardiologist','Cardiologist'),
 ('Anesthesiologists','Anesthesiologists'),
 ('Colon and Rectal Surgeons','Colon and Rectal Surgeons')
 ]
+positions=[('fulltime','fulltime'),
+('part-time','part-time')
+]
 
 class Doctor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
@@ -32,7 +35,7 @@ class Reception(models.Model):
     profile_pic=models.ImageField(upload_to='profile_pic/ReceptionProfilePic/',null=True,blank=True)
     address=models.CharField(max_length=40)
     mobile=models.CharField(max_length=20,null=True)
-    position=models.CharField(max_length=30)
+    position= models.CharField(max_length=50,choices=positions,default='fulltime')
     status=models.BooleanField(default=False)
     @property
     def get_name(self):

@@ -78,7 +78,7 @@ def doctor_signup_view(request):
 
 def reception_signup_view(request):
     userForm=forms.ReceptionUserForm()
-    receptionForm=forms.DoctorForm()
+    receptionForm=forms.ReceptionForm()
     mydict={'userForm':userForm,'receptionForm':receptionForm}
     if request.method=='POST':
         userForm=forms.receptionUserForm(request.POST)

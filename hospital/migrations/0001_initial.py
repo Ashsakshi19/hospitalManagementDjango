@@ -38,6 +38,17 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Reception',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('address', models.CharField(max_length=40)),
+                ('mobile', models.CharField(max_length=40, null=True)),
+                ('position', models.CharField(choices=[('fulltime','fulltime'),('part-time','part-time')],default='fulltime',max_length=40)),
+                ('status', models.BooleanField(default=False)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Doctor',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
