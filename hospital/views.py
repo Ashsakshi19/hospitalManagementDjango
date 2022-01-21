@@ -81,7 +81,7 @@ def reception_signup_view(request):
     receptionForm=forms.ReceptionForm()
     mydict={'userForm':userForm,'receptionForm':receptionForm}
     if request.method=='POST':
-        userForm=forms.receptionUserForm(request.POST)
+        userForm=forms.ReceptionUserForm(request.POST)
         receptionForm=forms.ReceptionForm(request.POST,request.FILES)
         if userForm.is_valid() and receptionForm.is_valid():
             user=userForm.save()
@@ -128,6 +128,8 @@ def is_doctor(user):
     return user.groups.filter(name='DOCTOR').exists()
 def is_patient(user):
     return user.groups.filter(name='PATIENT').exists()
+def is_reception(user):
+    return user.groups.gilter(name='RECEPTION').exists()
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
@@ -146,7 +148,12 @@ def afterlogin_view(request):
             return redirect('patient-dashboard')
         else:
             return render(request,'hospital/patient_wait_for_approval.html')
-
+    elif is_reception(request.user):
+        accountapproval=models.Reception.objects.all().filter(user_id=request.user.id,status=True)
+        if accountapproval:
+            return redirect('reception-dashboard')
+        else:
+            return render(request,'hospital/reception_wait_for_approval.html')
 
 
 
