@@ -47,6 +47,15 @@ urlpatterns = [
     path('reject-doctor/<int:pk>', views.reject_doctor_view,name='reject-doctor'),
     path('admin-view-doctor-specialisation',views.admin_view_doctor_specialisation_view,name='admin-view-doctor-specialisation'),
 
+    path('admin-reception', views.admin_reception_view,name='admin-reception'),
+    path('admin-view-reception', views.admin_view_reception_view,name='admin-view-reception'),
+    path('delete-reception-from-hospital/<int:pk>', views.delete_reception_from_hospital_view,name='delete-reception-from-hospital'),
+    path('update-reception/<int:pk>', views.update_reception_view,name='update-reception'),
+    path('admin-add-reception', views.admin_add_reception_view,name='admin-add-reception'),
+    path('admin-approve-reception', views.admin_approve_reception_view,name='admin-approve-reception'),
+    path('approve-reception/<int:pk>', views.approve_reception_view,name='approve-reception'),
+    path('reject-reception/<int:pk>', views.reject_reception_view,name='reject-reception'),
+    path('admin-view-reception-specialisation',views.admin_view_reception_specialisation_view,name='admin-view-reception-specialisation'),
 
     path('admin-patient', views.admin_patient_view,name='admin-patient'),
     path('admin-view-patient', views.admin_view_patient_view,name='admin-view-patient'),

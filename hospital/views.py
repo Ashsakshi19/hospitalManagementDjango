@@ -129,7 +129,7 @@ def is_doctor(user):
 def is_patient(user):
     return user.groups.filter(name='PATIENT').exists()
 def is_reception(user):
-    return user.groups.gilter(name='RECEPTION').exists()
+    return user.groups.filter(name='RECEPTION').exists()
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
@@ -169,10 +169,14 @@ def afterlogin_view(request):
 def admin_dashboard_view(request):
     #for both table in admin dashboard
     doctors=models.Doctor.objects.all().order_by('-id')
+    receptions=models.Reception.objects.all().order_by('-id')
     patients=models.Patient.objects.all().order_by('-id')
     #for three cards
     doctorcount=models.Doctor.objects.all().filter(status=True).count()
     pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    receptioncount=models.Reception.objects.all().filter(status=True).count()
+    pendingreceptioncount=models.Reception.objects.all().filter(status=False).count()
 
     patientcount=models.Patient.objects.all().filter(status=True).count()
     pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
@@ -181,9 +185,12 @@ def admin_dashboard_view(request):
     pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
     mydict={
     'doctors':doctors,
+    'receptions':receptions,
     'patients':patients,
     'doctorcount':doctorcount,
     'pendingdoctorcount':pendingdoctorcount,
+    'receptioncount':receptioncount,
+    'pendingreceptioncount':pendingreceptioncount,
     'patientcount':patientcount,
     'pendingpatientcount':pendingpatientcount,
     'appointmentcount':appointmentcount,
@@ -306,7 +313,118 @@ def admin_view_doctor_specialisation_view(request):
     doctors=models.Doctor.objects.all().filter(status=True)
     return render(request,'hospital/admin_view_doctor_specialisation.html',{'doctors':doctors})
 
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_reception_view(request):
+    return render(request,'hospital/admin_reception.html')
 
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_view_reception_view(request):
+    receptions=models.Reception.objects.all().filter(status=True)
+    return render(request,'hospital/admin_view_reception.html',{'receptions':receptions})
+
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def delete_reception_from_hospital_view(request,pk):
+    reception=models.Reception.objects.get(id=pk)
+    user=models.User.objects.get(id=reception.user_id)
+    user.delete()
+    reception.delete()
+    return redirect('admin-view-reception')
+
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def update_reception_view(request,pk):
+    reception=models.Reception.objects.get(id=pk)
+    user=models.User.objects.get(id=reception.user_id)
+
+    userForm=forms.ReceptionUserForm(instance=user)
+    receptionForm=forms.ReceptionForm(request.FILES,instance=reception)
+    mydict={'userForm':userForm,'receptionForm':receptionForm}
+    if request.method=='POST':
+        userForm=forms.ReceptionUserForm(request.POST,instance=user)
+        receptionForm=forms.ReceptionForm(request.POST,request.FILES,instance=reception)
+        if userForm.is_valid() and receptionForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+            reception=receptionForm.save(commit=False)
+            reception.status=True
+            reception.save()
+            return redirect('admin-view-reception')
+    return render(request,'hospital/admin_update_reception.html',context=mydict)
+
+
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_add_reception_view(request):
+    userForm=forms.ReceptionUserForm()
+    receptionForm=forms.ReceptionForm()
+    mydict={'userForm':userForm,'receptionForm':receptionForm}
+    if request.method=='POST':
+        userForm=forms.ReceptionUserForm(request.POST)
+        receptionForm=forms.ReceptionForm(request.POST, request.FILES)
+        if userForm.is_valid() and receptionForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+
+            reception=receptionForm.save(commit=False)
+            reception.user=user
+            reception.status=True
+            reception.save()
+
+            my_reception_group = Group.objects.get_or_create(name='RECEPTION')
+            my_reception_group[0].user_set.add(user)
+
+        return HttpResponseRedirect('admin-view-reception')
+    return render(request,'hospital/admin_add_reception.html',context=mydict)
+
+
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_approve_reception_view(request):
+    #those whose approval are needed
+    receptions=models.Reception.objects.all().filter(status=False)
+    return render(request,'hospital/admin_approve_reception.html',{'receptions':receptions})
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def approve_reception_view(request,pk):
+    reception=models.Reception.objects.get(id=pk)
+    reception.status=True
+    reception.save()
+    return redirect(reverse('admin-approve-reception'))
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def reject_reception_view(request,pk):
+    reception=models.Reception.objects.get(id=pk)
+    user=models.User.objects.get(id=reception.user_id)
+    user.delete()
+    reception.delete()
+    return redirect('admin-approve-reception')
+
+
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_view_reception_specialisation_view(request):
+    receptions=models.Reception.objects.all().filter(status=True)
+    return render(request,'hospital/admin_view_reception_specialisation.html',{'receptions':receptions})
 
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
