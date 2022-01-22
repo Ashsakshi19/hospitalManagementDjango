@@ -93,7 +93,10 @@ urlpatterns +=[
     path('delete-appointment/<int:pk>', views.delete_appointment_view,name='delete-appointment'),
 ]
 
-
+#---------FOR RECEPTION RELATED URLS-----------------------------------
+urlpatterns+=[
+    path('reception-dashboard',views.reception_dashboard_view,name='reception-dashboard'),
+]
 
 
 #---------FOR PATIENT RELATED URLS-------------------------------------

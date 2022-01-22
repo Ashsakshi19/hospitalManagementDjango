@@ -199,6 +199,28 @@ def admin_dashboard_view(request):
     return render(request,'hospital/admin_dashboard.html',context=mydict)
 
 
+@login_required(login_url='receptionlogin')
+@user_passes_test(is_reception)
+def reception_dashboard_view(request):
+    #for both table in admin dashboard
+    patients=models.Patient.objects.all().order_by('-id')
+    #for two cards
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    mydict={
+    'patients':patients,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    }
+    return render(request,'hospital/reception_dashboard.html',context=mydict)
+
+
 # this view for sidebar click on admin page
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
