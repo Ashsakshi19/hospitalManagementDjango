@@ -103,6 +103,13 @@ urlpatterns+=[
     path('reception-discharge-patient', views.reception_discharge_patient_view,name='reception-discharge-patient'),
     path('discharge-patient/<int:pk>', views.discharge_patient_view,name='discharge-patient'),
     path('download-pdf/<int:pk>', views.download_pdf_view,name='download-pdf'),
+
+    path('reception-appointment', views.reception_appointment_view,name='reception-appointment'),
+    path('reception-view-appointment', views.reception_view_appointment_view,name='reception-view-appointment'),
+    path('reception-add-appointment', views.reception_add_appointment_view,name='reception-add-appointment'),
+    path('reception-approve-appointment', views.reception_approve_appointment_view,name='reception-approve-appointment'),
+    path('approve-appointment/<int:pk>', views.r_approve_appointment_view,name='approve-appointment'),
+    path('reject-appointment/<int:pk>', views.r_reject_appointment_view,name='reject-appointment'),
 ]
 
 
