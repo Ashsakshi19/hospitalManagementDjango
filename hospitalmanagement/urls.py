@@ -96,6 +96,13 @@ urlpatterns +=[
 #---------FOR RECEPTION RELATED URLS-----------------------------------
 urlpatterns+=[
     path('reception-dashboard',views.reception_dashboard_view,name='reception-dashboard'),
+    path('reception-patient', views.reception_patient_view,name='reception-patient'),
+    path('reception-view-patient', views.reception_view_patient_view,name='reception-view-patient'),
+    path('delete-patient-from-hospital/<int:pk>', views.delete_patient_from_hospital_view,name='delete-patient-from-hospital'),
+    path('update-patient/<int:pk>', views.update_patient_view,name='update-patient'),
+    path('reception-discharge-patient', views.reception_discharge_patient_view,name='reception-discharge-patient'),
+    path('discharge-patient/<int:pk>', views.discharge_patient_view,name='discharge-patient'),
+    path('download-pdf/<int:pk>', views.download_pdf_view,name='download-pdf'),
 ]
 
 
