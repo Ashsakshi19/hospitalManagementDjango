@@ -1,13 +1,27 @@
 {% extends 'hospital/homebase.html' %}
-
+{% load static %}
 {% block content %}
+<head>
+  <style media="screen">
 
-<br>
-<br>
 
+    .jumbotron {
+      margin-top: 10px;
+      height: 100vh;
+      margin-bottom: 0px;
+      background-image: url('{% static "images/adminpage.png" %}');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .jumbotron h5,
+    h3 {
+      text-align: center;
+    }
+  </style>
+</head>
 <div class="jumbotron" style="margin-bottom:0px;">
   <h1 class="display-4" style="text-align:center;">Hello, Admin</h1>
-  <p class="lead">Welcome to Hospital Management System.</p>
+  <p class="lead"><b>Welcome to Woodland Hospital.</b></p>
   <hr class="my-4">
  
   <p class="lead">
