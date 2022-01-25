@@ -603,11 +603,6 @@ def reject_patient_view(request,pk):
 
 
 #--------------------- FOR DISCHARGING PATIENT BY ADMIN START-------------------------
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def admin_discharge_patient_view(request):
-    patients=models.Patient.objects.all().filter(status=True)
-    return render(request,'hospital/admin_discharge_patient.html',{'patients':patients})
 
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
@@ -615,54 +610,6 @@ def reception_discharge_patient_view(request):
     patients=models.Patient.objects.all().filter(status=True)
     return render(request,'hospital/reception_discharge_patient.html',{'patients':patients})
 
-
-
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def discharge_patient_view(request,pk):
-    patient=models.Patient.objects.get(id=pk)
-    days=(date.today()-patient.admitDate) #2 days, 0:00:00
-    assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
-    d=days.days # only how many day that is 2
-    patientDict={
-        'patientId':pk,
-        'name':patient.get_name,
-        'mobile':patient.mobile,
-        'address':patient.address,
-        'symptoms':patient.symptoms,
-        'admitDate':patient.admitDate,
-        'todayDate':date.today(),
-        'day':d,
-        'assignedDoctorName':assignedDoctor[0].first_name,
-    }
-    if request.method == 'POST':
-        feeDict ={
-            'roomCharge':int(request.POST['roomCharge'])*int(d),
-            'doctorFee':request.POST['doctorFee'],
-            'medicineCost' : request.POST['medicineCost'],
-            'OtherCharge' : request.POST['OtherCharge'],
-            'total':(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
-        }
-        patientDict.update(feeDict)
-        #for updating to database patientDischargeDetails (pDD)
-        pDD=models.PatientDischargeDetails()
-        pDD.patientId=pk
-        pDD.patientName=patient.get_name
-        pDD.assignedDoctorName=assignedDoctor[0].first_name
-        pDD.address=patient.address
-        pDD.mobile=patient.mobile
-        pDD.symptoms=patient.symptoms
-        pDD.admitDate=patient.admitDate
-        pDD.releaseDate=date.today()
-        pDD.daySpent=int(d)
-        pDD.medicineCost=int(request.POST['medicineCost'])
-        pDD.roomCharge=int(request.POST['roomCharge'])*int(d)
-        pDD.doctorFee=int(request.POST['doctorFee'])
-        pDD.OtherCharge=int(request.POST['OtherCharge'])
-        pDD.total=(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
-        pDD.save()
-        return render(request,'hospital/patient_final_bill.html',context=patientDict)
-    return render(request,'hospital/patient_generate_bill.html',context=patientDict)
 
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
@@ -778,23 +725,7 @@ def reception_view_appointment_view(request):
 
 
 
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def admin_add_appointment_view(request):
-    appointmentForm=forms.AppointmentForm()
-    mydict={'appointmentForm':appointmentForm,}
-    if request.method=='POST':
-        appointmentForm=forms.AppointmentForm(request.POST)
-        if appointmentForm.is_valid():
-            appointment=appointmentForm.save(commit=False)
-            appointment.doctorId=request.POST.get('doctorId')
-            appointment.patientId=request.POST.get('patientId')
-            appointment.doctorName=models.User.objects.get(id=request.POST.get('doctorId')).first_name
-            appointment.patientName=models.User.objects.get(id=request.POST.get('patientId')).first_name
-            appointment.status=True
-            appointment.save()
-        return HttpResponseRedirect('admin-view-appointment')
-    return render(request,'hospital/admin_add_appointment.html',context=mydict)
+
 
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
@@ -814,29 +745,12 @@ def reception_add_appointment_view(request):
         return HttpResponseRedirect('reception-view-appointment')
     return render(request,'hospital/reception_add_appointment.html',context=mydict)
 
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def admin_approve_appointment_view(request):
-    #those whose approval are needed
-    appointments=models.Appointment.objects.all().filter(status=False)
-    return render(request,'hospital/admin_approve_appointment.html',{'appointments':appointments})
-
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
 def reception_approve_appointment_view(request):
     #those whose approval are needed
     appointments=models.Appointment.objects.all().filter(status=False)
     return render(request,'hospital/reception_approve_appointment.html',{'appointments':appointments})
-
-
-
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def approve_appointment_view(request,pk):
-    appointment=models.Appointment.objects.get(id=pk)
-    appointment.status=True
-    appointment.save()
-    return redirect(reverse('admin-approve-appointment'))
 
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
@@ -845,15 +759,6 @@ def r_approve_appointment_view(request,pk):
     appointment.status=True
     appointment.save()
     return redirect(reverse('reception-approve-appointment'))
-
-
-
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
-def reject_appointment_view(request,pk):
-    appointment=models.Appointment.objects.get(id=pk)
-    appointment.delete()
-    return redirect('admin-approve-appointment')
 
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)

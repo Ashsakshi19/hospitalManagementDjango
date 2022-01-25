@@ -65,17 +65,10 @@ urlpatterns = [
     path('admin-approve-patient', views.admin_approve_patient_view,name='admin-approve-patient'),
     path('approve-patient/<int:pk>', views.approve_patient_view,name='approve-patient'),
     path('reject-patient/<int:pk>', views.reject_patient_view,name='reject-patient'),
-    path('admin-discharge-patient', views.admin_discharge_patient_view,name='admin-discharge-patient'),
-    path('discharge-patient/<int:pk>', views.discharge_patient_view,name='discharge-patient'),
-    path('download-pdf/<int:pk>', views.download_pdf_view,name='download-pdf'),
 
 
     path('admin-appointment', views.admin_appointment_view,name='admin-appointment'),
     path('admin-view-appointment', views.admin_view_appointment_view,name='admin-view-appointment'),
-    path('admin-add-appointment', views.admin_add_appointment_view,name='admin-add-appointment'),
-    path('admin-approve-appointment', views.admin_approve_appointment_view,name='admin-approve-appointment'),
-    path('approve-appointment/<int:pk>', views.approve_appointment_view,name='approve-appointment'),
-    path('reject-appointment/<int:pk>', views.reject_appointment_view,name='reject-appointment'),
 ]
 
 
