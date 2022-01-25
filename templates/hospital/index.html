@@ -30,22 +30,20 @@
 
     .glow {
       font-size: 50px;
-      color: white;
+      color: #6d1361;
       text-align: center;
-      -webkit-animation: glow 1s ease-in-out infinite alternate;
-      -moz-animation: glow 1s ease-in-out infinite alternate;
-      animation: glow 1s ease-in-out infinite alternate;
+      position: relative;
+      bottom: 60px;
+      
+      
+    }
+    .emergency{
+      color:#6d1361;
+      position:relative;
+      bottom: 30px;
     }
 
-    @-webkit-keyframes glow {
-      from {
-        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000, 0 0 50px #9554b3, 0 0 60px #9554b3, 0 0 70px #9554b3;
-      }
-
-      to {
-        text-shadow: 0 0 20px #eeeeee, 0 0 30px #fa2d2d, 0 0 40px #fa2d2d, 0 0 50px #fa2d2d, 0 0 60px #fa2d2d, 0 0 70px #fa2d2d, 0 0 80px #fa2d2d;
-      }
-    }
+    
   </style>
 </head>
 <br>
@@ -53,10 +51,10 @@
 
 <div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
   <br>
-  <h5 class="display-3 glow">Hospital Management System</h5>
+  <h5 class="glow">Woodland Hospital</h5>
   <br><br><br><br><br>
   <p>
-  <h3>Emergency ?</h3>
+  <h3 class="emergency">Emergency  ?</h3>
 
   <p class="lead">
     <a class="btn btn-danger btn-lg" href="/patientclick" role="button">Take Appointment Now!</a>
