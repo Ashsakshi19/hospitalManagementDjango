@@ -34,6 +34,7 @@ class Migration(migrations.Migration):
                 ('symptoms', models.CharField(max_length=100, null=True)),
                 ('assignedDoctorId', models.PositiveIntegerField()),
                 ('status', models.BooleanField(default=False)),
+                ('patienttype',models.CharField(choices=[('indoor','indoor'),('outdoor','outdoor')],default='indoor',max_length=20)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

@@ -13,6 +13,9 @@ departments=[('Cardiologist','Cardiologist'),
 positions=[('fulltime','fulltime'),
 ('part-time','part-time')
 ]
+types=[('indoor','indoor'),
+('outdoor','outdoor')
+]
 
 class Doctor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
@@ -56,6 +59,7 @@ class Patient(models.Model):
     assignedDoctorId = models.PositiveIntegerField(null=True)
     admitDate=models.DateField(auto_now=True)
     status=models.BooleanField(default=False)
+    patienttype=models.CharField(max_length=20,choices=types,default='indoor')
     @property
     def get_name(self):
         return self.user.first_name+" "+self.user.last_name
