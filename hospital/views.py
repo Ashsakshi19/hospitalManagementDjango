@@ -909,6 +909,7 @@ def patient_dashboard_view(request):
     'symptoms':patient.symptoms,
     'doctorDepartment':doctor.department,
     'admitDate':patient.admitDate,
+    'patienttype':patient.patienttype,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
 
