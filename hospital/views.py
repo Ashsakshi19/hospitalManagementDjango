@@ -118,6 +118,24 @@ def patient_signup_view(request):
         return HttpResponseRedirect('patientlogin')
     return render(request,'hospital/patientsignup.html',context=mydict)
 
+def labcustomer_signup_view(request):
+    userForm=forms.LabcustomerUserForm()
+    labcustomerForm=forms.LabcustomerForm()
+    mydict={'userForm':userForm,'labcustomerForm':labcustomerForm}
+    if request.method=='POST':
+        userForm=forms.LabcustomerUserForm(request.POST)
+        labcustomerForm=forms.LabcustomerForm(request.POST,request.FILES)
+        if userForm.is_valid() and labcustomerForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+            labcustomer=labcustomerForm.save(commit=False)
+            labcustomer.user=user
+            labcustomer=labcustomer.save()
+            my_labcustomer_group = Group.objects.get_or_create(name='LABCUSTOMER')
+            my_labcustomer_group[0].user_set.add(user)
+        return HttpResponseRedirect('labcustomerlogin')
+    return render(request,'hospital/labcustomersignup.html',context=mydict)
 
 
 

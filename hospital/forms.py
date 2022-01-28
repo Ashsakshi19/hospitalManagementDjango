@@ -59,6 +59,18 @@ class PatientForm(forms.ModelForm):
         model=models.Patient
         fields=['address','mobile','status','symptoms','profile_pic','patienttype']
 
+class LabcustomerUserForm(forms.ModelForm):
+    class Meta:
+        model=User
+        fields=['first_name','last_name','username','password']
+        widgets={
+            'password':forms.PasswordInput()
+        }
+class LabcustomerForm(forms.ModelForm):
+    class Meta:
+        model=models.Labcustomer
+        fields=['address','mobile','status','scheduledate','profile_pic','test']
+
 
 
 class AppointmentForm(forms.ModelForm):

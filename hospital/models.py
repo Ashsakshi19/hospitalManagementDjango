@@ -16,6 +16,14 @@ positions=[('fulltime','fulltime'),
 types=[('indoor','indoor'),
 ('outdoor','outdoor')
 ]
+tests=[('blood test','blood test'),
+('sugar test','sugar test'),
+('lipid profile','lipid profile'),
+('liver function test','liver function test'),
+('urine analysis','urine analysis'),
+('kidney function test','kidney function test'),
+('thyroid test','thyroid test')
+]
 
 class Doctor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
@@ -68,6 +76,23 @@ class Patient(models.Model):
         return self.user.id
     def __str__(self):
         return self.user.first_name+" ("+self.symptoms+")"
+
+class Labcustomer(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    profile_pic=models.ImageField(upload_to='profile_pic/LabcustomerProfilePic/',null=True,blank=True)
+    address=models.CharField(max_length=40)
+    mobile=models.CharField(max_length=20,null=False)
+    scheduledate=models.DateField(null=False)
+    test=models.CharField(max_length=40,choices=tests,default='blood test')
+    status=models.BooleanField(default=False)
+    @property
+    def get_name(self):
+        return self.user.first_name+" "+self.user.last_name
+    @property
+    def get_id(self):
+        return self.user.id
+    def __str__(self):
+        return self.user.first_name+" ("+self.test+")"    
 
 
 class Appointment(models.Model):

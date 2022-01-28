@@ -39,6 +39,18 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Labcustomer',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('address', models.CharField(max_length=40)),
+                ('mobile', models.CharField(max_length=40, null=True)),
+                ('scheduledate', models.DateField(null=True)),
+                ('status', models.BooleanField(default=False)),
+                ('test',models.CharField(choices=[('indoor','indoor'),('outdoor','outdoor')],default='blood test',max_length=40)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Reception',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
