@@ -68,6 +68,9 @@ urlpatterns = [
     path('admin-approve-patient', views.admin_approve_patient_view,name='admin-approve-patient'),
     path('approve-patient/<int:pk>', views.approve_patient_view,name='approve-patient'),
     path('reject-patient/<int:pk>', views.reject_patient_view,name='reject-patient'),
+    path('reception-approve-labcustomer', views.reception_approve_labcustomer_view,name='reception-approve-labcustomer'),
+    path('approve-labcustomer/<int:pk>', views.approve_labcustomer_view,name='approve-labcustomer'),
+    path('reject-labcustomer/<int:pk>', views.reject_labcustomer_view,name='reject-labcustomer'),
 
 
     path('admin-appointment', views.admin_appointment_view,name='admin-appointment'),
@@ -93,6 +96,7 @@ urlpatterns +=[
 urlpatterns+=[
     path('reception-dashboard',views.reception_dashboard_view,name='reception-dashboard'),
     path('reception-patient', views.reception_patient_view,name='reception-patient'),
+    path('reception-labcustomer',views.reception_labcustomer_view,name='reception-labcustomer'),
     path('reception-view-patient', views.reception_view_patient_view,name='reception-view-patient'),
     path('delete-patient-from-hospital/<int:pk>', views.delete_patient_from_hospital_view,name='delete-patient-from-hospital'),
     path('update-patient/<int:pk>', views.update_patient_view,name='update-patient'),
@@ -118,6 +122,10 @@ urlpatterns +=[
     path('patient-view-appointment', views.patient_view_appointment_view,name='patient-view-appointment'),
     path('patient-discharge', views.patient_discharge_view,name='patient-discharge'),
 
+]
+
+urlpatterns+=[
+    path('labcustomer-dashboard',views.labcustomer_dashboard_view,name='labcustomer-dashboard'),
 ]
 
 #Developed By : sumit kumar

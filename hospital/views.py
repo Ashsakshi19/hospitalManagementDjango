@@ -238,14 +238,21 @@ def reception_dashboard_view(request):
 
     appointmentcount=models.Appointment.objects.all().filter(status=True).count()
     pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+
+    labcustomercount=models.Labcustomer.objects.all().filter(status=True).count()
+    pendinglabcustomercount=models.Labcustomer.objects.all().filter(status=False).count()
     mydict={
     'patients':patients,
     'patientcount':patientcount,
     'pendingpatientcount':pendingpatientcount,
     'appointmentcount':appointmentcount,
     'pendingappointmentcount':pendingappointmentcount,
+    'labcustomercount':labcustomercount,
+    'pendinglabcustomercount':pendinglabcustomercount,
     }
     return render(request,'hospital/reception_dashboard.html',context=mydict)
+
+
 
 
 # this view for sidebar click on admin page
@@ -336,6 +343,8 @@ def admin_approve_doctor_view(request):
     return render(request,'hospital/admin_approve_doctor.html',{'doctors':doctors})
 
 
+
+
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def approve_doctor_view(request,pk):
@@ -343,6 +352,8 @@ def approve_doctor_view(request,pk):
     doctor.status=True
     doctor.save()
     return redirect(reverse('admin-approve-doctor'))
+
+
 
 
 @login_required(login_url='adminlogin')
@@ -353,6 +364,8 @@ def reject_doctor_view(request,pk):
     user.delete()
     doctor.delete()
     return redirect('admin-approve-doctor')
+
+
 
 
 
@@ -485,6 +498,11 @@ def admin_patient_view(request):
 def reception_patient_view(request):
     return render(request,'hospital/reception_patient.html')
 
+@login_required(login_url='receptionlogin')
+@user_passes_test(is_reception)
+def reception_labcustomer_view(request):
+    return render(request,'hospital/reception_labcustomer.html')
+
 
 
 @login_required(login_url='adminlogin')
@@ -606,6 +624,13 @@ def admin_approve_patient_view(request):
     patients=models.Patient.objects.all().filter(status=False)
     return render(request,'hospital/admin_approve_patient.html',{'patients':patients})
 
+@login_required(login_url='receptionlogin')
+@user_passes_test(is_reception)
+def reception_approve_labcustomer_view(request):
+    #those whose approval are needed
+    labcustomers=models.Labcustomer.objects.all().filter(status=False)
+    return render(request,'hospital/reception_approve_labcustomer.html',{'labcustomers':labcustomers})
+
 
 
 @login_required(login_url='adminlogin')
@@ -615,6 +640,14 @@ def approve_patient_view(request,pk):
     patient.status=True
     patient.save()
     return redirect(reverse('admin-approve-patient'))
+
+@login_required(login_url='receptionlogin')
+@user_passes_test(is_reception)
+def approve_labcustomer_view(request,pk):
+    labcustomer=models.Labcustomer.objects.get(id=pk)
+    labcustomer.status=True
+    labcustomer.save()
+    return redirect(reverse('reception-approve-labcustomer'))
 
 
 
@@ -626,6 +659,15 @@ def reject_patient_view(request,pk):
     user.delete()
     patient.delete()
     return redirect('admin-approve-patient')
+
+@login_required(login_url='receptionlogin')
+@user_passes_test(is_reception)
+def reject_labcustomer_view(request,pk):
+    labcustomer=models.Labcustomer.objects.get(id=pk)
+    user=models.User.objects.get(id=labcustomer.user_id)
+    user.delete()
+    labcustomer.delete()
+    return redirect('reception-approve-labcustomer')
 
 
 
@@ -939,6 +981,17 @@ def patient_dashboard_view(request):
     'patienttype':patient.patienttype,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
+
+@login_required(login_url='labcustomerlogin')
+@user_passes_test(is_labcustomer)
+def labcustomer_dashboard_view(request):
+    labcustomer=models.Patient.objects.get(user_id=request.user.id)
+    mydict={
+    'labcustomer':labcustomer,
+    'test':labcustomer.test,
+    'scheduledate':patient.scheduledate,
+    }
+    return render(request,'hospital/labcustomer_dashboard.html',context=mydict)
 
 
 

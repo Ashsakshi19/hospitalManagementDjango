@@ -17,6 +17,7 @@ class LabcustomerAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Labcustomer,LabcustomerAdmin)
 
+
 class AppointmentAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Appointment, AppointmentAdmin)
