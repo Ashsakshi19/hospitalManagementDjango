@@ -39,6 +39,8 @@ def patientclick_view(request):
     #if request.user.is_authenticated:
         #return HttpResponseRedirect('afterlogin')
     return render(request,'hospital/patientclick.html')
+def labcustomerclick_view(request):
+    return render(request,'hospital/labcustomerclick.html')
 
 
 
