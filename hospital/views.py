@@ -39,6 +39,8 @@ def patientclick_view(request):
     #if request.user.is_authenticated:
         #return HttpResponseRedirect('afterlogin')
     return render(request,'hospital/patientclick.html')
+def labcustomerclick_view(request):
+    return render(request,'hospital/labcustomerclick.html')
 
 
 
@@ -116,6 +118,24 @@ def patient_signup_view(request):
         return HttpResponseRedirect('patientlogin')
     return render(request,'hospital/patientsignup.html',context=mydict)
 
+def labcustomer_signup_view(request):
+    userForm=forms.LabcustomerUserForm()
+    labcustomerForm=forms.LabcustomerForm()
+    mydict={'userForm':userForm,'labcustomerForm':labcustomerForm}
+    if request.method=='POST':
+        userForm=forms.LabcustomerUserForm(request.POST)
+        labcustomerForm=forms.LabcustomerForm(request.POST,request.FILES)
+        if userForm.is_valid() and labcustomerForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+            labcustomer=labcustomerForm.save(commit=False)
+            labcustomer.user=user
+            labcustomer=labcustomer.save()
+            my_labcustomer_group = Group.objects.get_or_create(name='LABCUSTOMER')
+            my_labcustomer_group[0].user_set.add(user)
+        return HttpResponseRedirect('labcustomerlogin')
+    return render(request,'hospital/labcustomersignup.html',context=mydict)
 
 
 
@@ -130,6 +150,8 @@ def is_patient(user):
     return user.groups.filter(name='PATIENT').exists()
 def is_reception(user):
     return user.groups.filter(name='RECEPTION').exists()
+def is_labcustomer(user):
+    return user.groups.filter(name='LABCUSTOMER').exists()
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
@@ -154,7 +176,12 @@ def afterlogin_view(request):
             return redirect('reception-dashboard')
         else:
             return render(request,'hospital/reception_wait_for_approval.html')
-
+    elif is_labcustomer(request.user):
+        accountapproval=models.Labcustomer.objects.all().filter(user_id=request.user.id,status=True)
+        if accountapproval:
+            return redirect('labcustomer-dashboard')
+        else:
+            return render(request,'hospital/labcustomer_wait_for_approval.html')
 
 
 
@@ -909,6 +936,7 @@ def patient_dashboard_view(request):
     'symptoms':patient.symptoms,
     'doctorDepartment':doctor.department,
     'admitDate':patient.admitDate,
+    'patienttype':patient.patienttype,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
 

@@ -67,7 +67,7 @@
     <div class="container register-form">
       <div class="form">
         <div class="note">
-          <p>Register to Hospital</p>
+          <p>Register for pathology test</p>
         </div>
 
         <div class="form-content">
@@ -80,13 +80,13 @@
                 {% render_field userForm.username class="form-control" placeholder="Username" %}
               </div>
               <div class="form-group">
-                {% render_field patientForm.address class="form-control" placeholder="Address" %}
+                {% render_field labcustomerForm.address class="form-control" placeholder="Address" %}
               </div>
               <div class="form-group">
-                {% render_field patientForm.symptoms class="form-control" placeholder="Symptoms" %}
+                {% render_field labcustomerForm.scheduledate class="form-control" placeholder="dd/mm/yy" %}
               </div>
               <div class="form-group">
-                {% render_field patientForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
+                {% render_field labcustomerForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
               </div>
             </div>
             <div class="col-md-6">
@@ -97,18 +97,15 @@
                 {% render_field userForm.password class="form-control" placeholder="Password" %}
               </div>
               <div class="form-group">
-                {% render_field patientForm.mobile class="form-control" pattern="[6789][0-9]{9}" placeholder="Contact Number" %}
+                {% render_field labcustomerForm.mobile class="form-control" pattern="[6789][0-9]{9}" placeholder="Contact Number" %}
               </div>
               <div class="form-group">
-                {% render_field patientForm.assignedDoctorId class="form-control" placeholder="Doctor" %}
-              </div>
-              <div class="form-group">
-                {% render_field patientForm.patienttype class="form-control" placeholder="Type" %}
+                {% render_field labcustomerForm.test class="form-control" placeholder="test" %}
               </div>
             </div>
           </div>
           <button type="submit" class="btnSubmit">Register</button>
-          <div class="text-center">Already have an account? <a href="patientlogin">Login here</a></div>
+          <div class="text-center">Already have an account? <a href="labcustomerlogin">Login here</a></div>
         </div>
       </div>
     </div>
