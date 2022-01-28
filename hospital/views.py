@@ -150,6 +150,8 @@ def is_patient(user):
     return user.groups.filter(name='PATIENT').exists()
 def is_reception(user):
     return user.groups.filter(name='RECEPTION').exists()
+def is_labcustomer(user):
+    return user.groups.filter(name='LABCUSTOMER').exists()
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
@@ -174,7 +176,12 @@ def afterlogin_view(request):
             return redirect('reception-dashboard')
         else:
             return render(request,'hospital/reception_wait_for_approval.html')
-
+    elif is_labcustomer(request.user):
+        accountapproval=models.Labcustomer.objects.all().filter(user_id=request.user.id,status=True)
+        if accountapproval:
+            return redirect('labcustomer-dashboard')
+        else:
+            return render(request,'hospital/labcustomer_wait_for_approval.html')
 
 
 
