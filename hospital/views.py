@@ -1185,14 +1185,9 @@ def contactus_view(request):
 
 def centralstore_view(request):
     return render(request,'hospital/centralstore.html')
+def whyus_view(request):
+    return render(request,'hospital/whyus.html')
 
+def gallery_view(request):
+    return render(request,'hospital/gallery.html')
 
-#---------------------------------------------------------------------------------
-#------------------------ ADMIN RELATED VIEWS END ------------------------------
-#---------------------------------------------------------------------------------
-
-
-
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
