@@ -42,6 +42,9 @@ def patientclick_view(request):
 def labcustomerclick_view(request):
     return render(request,'hospital/labcustomerclick.html')
 
+def pathologistclick_view(request):
+    return render(request,'hospital/pathologistclick.html')
+
 
 
 
@@ -96,6 +99,25 @@ def reception_signup_view(request):
             my_reception_group[0].user_set.add(user)
         return HttpResponseRedirect('receptionlogin')
     return render(request,'hospital/receptionsignup.html',context=mydict)
+
+def pathologist_signup_view(request):
+    userForm=forms.PathologistUserForm()
+    pathologistForm=forms.PathologistForm()
+    mydict={'userForm':userForm,'pathologistForm':pathologistForm}
+    if request.method=='POST':
+        userForm=forms.PathologistUserForm(request.POST)
+        pathologistForm=forms.PathologistForm(request.POST,request.FILES)
+        if userForm.is_valid() and pathologistForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+            pathologist=pathologistForm.save(commit=False)
+            pathologist.user=user
+            pathologist=pathologist.save()
+            my_pathologist_group = Group.objects.get_or_create(name='PATHOLOGIST')
+            my_pathologist_group[0].user_set.add(user)
+        return HttpResponseRedirect('pathologistlogin')
+    return render(request,'hospital/pathologistsignup.html',context=mydict)
 
 
 def patient_signup_view(request):
@@ -152,6 +174,8 @@ def is_reception(user):
     return user.groups.filter(name='RECEPTION').exists()
 def is_labcustomer(user):
     return user.groups.filter(name='LABCUSTOMER').exists()
+def is_pathologist(user):
+    return user.groups.filter(name='PATHOLOGIST').exists()
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
