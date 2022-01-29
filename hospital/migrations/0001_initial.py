@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
                 ('position', models.CharField(choices=[('fulltime','fulltime'),('part-time','part-time')],default='fulltime',max_length=40)),
                 ('status', models.BooleanField(default=False)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
+          ],
         ),
 
         migrations.CreateModel(
@@ -68,10 +68,10 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('address', models.CharField(max_length=40)),
                 ('mobile', models.CharField(max_length=40, null=True)),
-                ('position', models.CharField(choices=[('full time pathologist','full time pathologist'),('lab assistant','lab assistant'),('lab technician','lab technician')],default='full time pathologist',max_length=30)),
+                ('role', models.CharField(choices=[('full time pathologist','full time pathologist'),('lab assistant','lab assistant'),('lab technician','lab technician')],default='fulltime',max_length=40)),
                 ('status', models.BooleanField(default=False)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
+          ],
         ),
 
         migrations.CreateModel(

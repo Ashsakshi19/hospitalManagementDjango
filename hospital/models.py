@@ -61,6 +61,22 @@ class Reception(models.Model):
     def __str__(self):
         return "{} ({})".format(self.user.first_name,self.position)
 
+class Pathologist(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    profile_pic=models.ImageField(upload_to='profile_pic/PathologistProfilePic/',null=True,blank=True)
+    address=models.CharField(max_length=40)
+    mobile=models.CharField(max_length=20,null=True)
+    role= models.CharField(max_length=50,choices=roles,default='fulltime')
+    status=models.BooleanField(default=False)
+    @property
+    def get_name(self):
+        return self.user.first_name+" "+self.user.last_name
+    @property
+    def get_id(self):
+        return self.user.id
+    def __str__(self):
+        return "{} ({})".format(self.user.first_name,self.role)
+
 
 class Patient(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
@@ -98,21 +114,7 @@ class Labcustomer(models.Model):
     def __str__(self):
         return self.user.first_name+" ("+self.test+")"    
 
-class Pathologist(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic=models.ImageField(upload_to='profile_pic/PathologistProfilePic/',null=True,blank=True)
-    address=models.CharField(max_length=40)
-    mobile=models.CharField(max_length=20,null=False)
-    role=models.CharField(max_length=30,choices=roles,default='full time pathologist')
-    status=models.BooleanField(default=False)
-    @property
-    def get_name(self):
-        return self.user.first_name+" "+self.user.last_name
-    @property
-    def get_id(self):
-        return self.user.id
-    def __str__(self):
-        return "{} ({})".format(self.user.first_name,self.role)
+
 
 
 class Appointment(models.Model):

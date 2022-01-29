@@ -34,6 +34,7 @@ urlpatterns = [
     path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html')),
     path('receptionlogin',LoginView.as_view(template_name='hospital/receptionlogin.html')),
     path('labcustomerlogin',LoginView.as_view(template_name='hospital/labcustomerlogin.html')),
+    path('pathologistlogin',LoginView.as_view(template_name='hospital/pathologistlogin.html')),
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
@@ -60,6 +61,11 @@ urlpatterns = [
     path('approve-reception/<int:pk>', views.approve_reception_view,name='approve-reception'),
     path('reject-reception/<int:pk>', views.reject_reception_view,name='reject-reception'),
     path('admin-view-reception-specialisation',views.admin_view_reception_specialisation_view,name='admin-view-reception-specialisation'),
+    path('admin-pathologist', views.admin_pathologist_view,name='admin-pathologist'),
+    path('admin-approve-pathologist', views.admin_approve_pathologist_view,name='admin-approve-pathologist'),
+    path('approve-pathologist/<int:pk>', views.approve_pathologist_view,name='approve-pathologist'),
+    path('reject-pathologist/<int:pk>', views.reject_pathologist_view,name='reject-pathologist'),
+
 
     path('admin-patient', views.admin_patient_view,name='admin-patient'),
     path('admin-view-patient', views.admin_view_patient_view,name='admin-view-patient'),

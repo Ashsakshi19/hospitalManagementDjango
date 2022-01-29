@@ -206,6 +206,13 @@ def afterlogin_view(request):
             return redirect('labcustomer-dashboard')
         else:
             return render(request,'hospital/labcustomer_wait_for_approval.html')
+    elif is_pathologist(request.user):
+        accountapproval=models.Pathologist.objects.all().filter(user_id=request.user.id,status=True)
+        if accountapproval:
+            return redirect('pathologist-dashboard')
+        else:
+            return render(request,'hospital/pathologist_wait_for_approval.html')
+
 
 
 
@@ -222,6 +229,7 @@ def admin_dashboard_view(request):
     doctors=models.Doctor.objects.all().order_by('-id')
     receptions=models.Reception.objects.all().order_by('-id')
     patients=models.Patient.objects.all().order_by('-id')
+    pathologists=models.Pathologist.objects.all().order_by('-id')
     #for three cards
     doctorcount=models.Doctor.objects.all().filter(status=True).count()
     pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
@@ -234,13 +242,19 @@ def admin_dashboard_view(request):
 
     appointmentcount=models.Appointment.objects.all().filter(status=True).count()
     pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+
+    pathologistcount=models.Pathologist.objects.all().filter(status=True).count()
+    pendingpathologistcount=models.Pathologist.objects.all().filter(status=False).count()
     mydict={
     'doctors':doctors,
     'receptions':receptions,
     'patients':patients,
+    'pathologists':pathologists,
     'doctorcount':doctorcount,
     'pendingdoctorcount':pendingdoctorcount,
     'receptioncount':receptioncount,
+    'pathologistcount':pathologistcount,
+    'pendingpathologistcount':pendingpathologistcount,
     'pendingreceptioncount':pendingreceptioncount,
     'patientcount':patientcount,
     'pendingpatientcount':pendingpatientcount,
@@ -406,7 +420,10 @@ def admin_view_doctor_specialisation_view(request):
 def admin_reception_view(request):
     return render(request,'hospital/admin_reception.html')
 
-
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_pathologist_view(request):
+    return render(request,'hospital/admin_pathologist.html')
 
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
@@ -487,6 +504,12 @@ def admin_approve_reception_view(request):
     receptions=models.Reception.objects.all().filter(status=False)
     return render(request,'hospital/admin_approve_reception.html',{'receptions':receptions})
 
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def admin_approve_pathologist_view(request):
+    #those whose approval are needed
+    pathologists=models.Pathologist.objects.all().filter(status=False)
+    return render(request,'hospital/admin_approve_pathologist.html',{'pathologists':pathologists})
 
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
@@ -495,6 +518,14 @@ def approve_reception_view(request,pk):
     reception.status=True
     reception.save()
     return redirect(reverse('admin-approve-reception'))
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def approve_pathologist_view(request,pk):
+    pathologist=models.Pathologist.objects.get(id=pk)
+    pathologist.status=True
+    pathologist.save()
+    return redirect(reverse('admin-approve-pathologist'))
 
 
 @login_required(login_url='adminlogin')
@@ -505,6 +536,15 @@ def reject_reception_view(request,pk):
     user.delete()
     reception.delete()
     return redirect('admin-approve-reception')
+
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
+def reject_pathologist_view(request,pk):
+    pathologist=models.Pathologist.objects.get(id=pk)
+    user=models.User.objects.get(id=pathologist.user_id)
+    user.delete()
+    pathologist.delete()
+    return redirect('admin-approve-pathologist')
 
 
 
