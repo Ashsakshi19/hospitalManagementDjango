@@ -987,11 +987,11 @@ def patient_dashboard_view(request):
 @login_required(login_url='labcustomerlogin')
 @user_passes_test(is_labcustomer)
 def labcustomer_dashboard_view(request):
-    labcustomer=models.Patient.objects.get(user_id=request.user.id)
+    labcustomer=models.Labcustomer.objects.get(user_id=request.user.id)
     mydict={
     'labcustomer':labcustomer,
     'test':labcustomer.test,
-    'scheduledate':patient.scheduledate,
+    'scheduledate':labcustomer.scheduledate,
     }
     return render(request,'hospital/labcustomer_dashboard.html',context=mydict)
 
