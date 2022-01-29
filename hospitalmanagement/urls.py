@@ -20,19 +20,20 @@ urlpatterns = [
     path('patientclick', views.patientclick_view),
     path('receptionclick',views.receptionclick_view),
     path('labcustomerclick',views.labcustomerclick_view),
+    path('pathologistclick',views.pathologistclick_view),
 
     path('adminsignup', views.admin_signup_view),
     path('doctorsignup', views.doctor_signup_view,name='doctorsignup'),
     path('patientsignup', views.patient_signup_view),
     path('receptionsignup',views.reception_signup_view,name='receptionsignup'),
     path('labcustomersignup',views.labcustomer_signup_view,name='labcustomersignup'),
+    path('pathologistsignup',views.pathologist_signup_view,name='pathologistsignup'),
     
     path('adminlogin', LoginView.as_view(template_name='hospital/adminlogin.html')),
     path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),
     path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html')),
     path('receptionlogin',LoginView.as_view(template_name='hospital/receptionlogin.html')),
     path('labcustomerlogin',LoginView.as_view(template_name='hospital/labcustomerlogin.html')),
-
 
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
@@ -128,6 +129,13 @@ urlpatterns+=[
     path('labcustomer-dashboard',views.labcustomer_dashboard_view,name='labcustomer-dashboard'),
 ]
 
+urlpatterns+=[
+    path('whyus',views.whyus_view,name='whyus')
+]
+
+urlpatterns+=[
+    path('gallery',views.gallery_view,name='gallery')
+]
 #Developed By : sumit kumar
 #facebook : fb.com/sumit.luv
 #Youtube :youtube.com/lazycoders

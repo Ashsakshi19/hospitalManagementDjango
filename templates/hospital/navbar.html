@@ -10,16 +10,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-  <style type="text/css">
+  <style>
     .bs-example {
       margin: 0px;
+      color:#ffffff;
+      position: relative;
+      top: 60px;;
 
     }
 
     .navbar-brand {
       font-size: 20px;
       font-family: sans-serif;
-
+      color:#ffffff;
+      
     }
   </style>
 </head>
@@ -30,7 +34,9 @@
 
   <div class="bs-example">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background:#ff8aad;">
+      <img src="/static/images/icons8-home.svg" width="30" height="30" class="d-inline-block align-middle" alt="">
       <a href="/" class="navbar-brand">Home</a>
+     
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -38,18 +44,20 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
         <div class="navbar-nav">
 
-          
+         
 
 
         </div>
 
         <div class="navbar-nav">
-          <a href="/adminclick" class="nav-item nav-link">Admin</a>
-          <a href="/receptionclick" class="nav-item nav-link">Receptionist</a>
-          <a href="/doctorclick" class="nav-item nav-link">Doctor</a>
-          <a href="/patientclick" class="nav-item nav-link">Patient</a>
-          <a href="/aboutus" class="nav-item nav-link">About Us</a>
-          <a href="/contactus" class="nav-item nav-link">Contact Us</a>
+          <img src="/static/images/email.svg" width="30" height="30" class="d-inline-block align-middle" alt="">
+          <p>info@example.com</p>
+          <img src="/static/images/icons8-phone.svg" width="30" height="30" class="d-inline-block align-middle" alt="">
+          <p>022-21242124</p>
+          
+          
+          <a href="/aboutus" class="nav-item nav-link"><b>About Us</b></a>
+          <a href="/contactus" class="nav-item nav-link"><b>Contact Us</b></a>
         </div>
 
       </div>

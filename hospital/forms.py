@@ -41,6 +41,18 @@ class ReceptionForm(forms.ModelForm):
         model=models.Reception
         fields=['address','mobile','position','status','profile_pic']
 
+class PathologistUserForm(forms.ModelForm):
+    class Meta:
+        model=User
+        fields=['first_name','last_name','username','password']
+        widgets={
+        'password': forms.PasswordInput()
+        }
+class PathologistForm(forms.ModelForm):
+    class Meta:
+        model=models.Pathologist
+        fields=['address','mobile','role','status','profile_pic']
+
 
 #for teacher related form
 class PatientUserForm(forms.ModelForm):

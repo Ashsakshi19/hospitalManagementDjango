@@ -42,6 +42,9 @@ def patientclick_view(request):
 def labcustomerclick_view(request):
     return render(request,'hospital/labcustomerclick.html')
 
+def pathologistclick_view(request):
+    return render(request,'hospital/pathologistclick.html')
+
 
 
 
@@ -96,6 +99,25 @@ def reception_signup_view(request):
             my_reception_group[0].user_set.add(user)
         return HttpResponseRedirect('receptionlogin')
     return render(request,'hospital/receptionsignup.html',context=mydict)
+
+def pathologist_signup_view(request):
+    userForm=forms.PathologistUserForm()
+    pathologistForm=forms.PathologistForm()
+    mydict={'userForm':userForm,'pathologistForm':pathologistForm}
+    if request.method=='POST':
+        userForm=forms.PathologistUserForm(request.POST)
+        pathologistForm=forms.PathologistForm(request.POST,request.FILES)
+        if userForm.is_valid() and pathologistForm.is_valid():
+            user=userForm.save()
+            user.set_password(user.password)
+            user.save()
+            pathologist=pathologistForm.save(commit=False)
+            pathologist.user=user
+            pathologist=pathologist.save()
+            my_pathologist_group = Group.objects.get_or_create(name='PATHOLOGIST')
+            my_pathologist_group[0].user_set.add(user)
+        return HttpResponseRedirect('pathologistlogin')
+    return render(request,'hospital/pathologistsignup.html',context=mydict)
 
 
 def patient_signup_view(request):
@@ -152,6 +174,8 @@ def is_reception(user):
     return user.groups.filter(name='RECEPTION').exists()
 def is_labcustomer(user):
     return user.groups.filter(name='LABCUSTOMER').exists()
+def is_pathologist(user):
+    return user.groups.filter(name='PATHOLOGIST').exists()
 
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
@@ -987,11 +1011,11 @@ def patient_dashboard_view(request):
 @login_required(login_url='labcustomerlogin')
 @user_passes_test(is_labcustomer)
 def labcustomer_dashboard_view(request):
-    labcustomer=models.Patient.objects.get(user_id=request.user.id)
+    labcustomer=models.Labcustomer.objects.get(user_id=request.user.id)
     mydict={
     'labcustomer':labcustomer,
     'test':labcustomer.test,
-    'scheduledate':patient.scheduledate,
+    'scheduledate':labcustomer.scheduledate,
     }
     return render(request,'hospital/labcustomer_dashboard.html',context=mydict)
 
@@ -1161,14 +1185,9 @@ def contactus_view(request):
 
 def centralstore_view(request):
     return render(request,'hospital/centralstore.html')
+def whyus_view(request):
+    return render(request,'hospital/whyus.html')
 
+def gallery_view(request):
+    return render(request,'hospital/gallery.html')
 
-#---------------------------------------------------------------------------------
-#------------------------ ADMIN RELATED VIEWS END ------------------------------
-#---------------------------------------------------------------------------------
-
-
-
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
