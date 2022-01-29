@@ -129,6 +129,13 @@ urlpatterns+=[
     path('labcustomer-dashboard',views.labcustomer_dashboard_view,name='labcustomer-dashboard'),
 ]
 
+urlpatterns+=[
+    path('whyus',views.whyus_view,name='whyus')
+]
+
+urlpatterns+=[
+    path('gallery',views.gallery_view,name='gallery')
+]
 #Developed By : sumit kumar
 #facebook : fb.com/sumit.luv
 #Youtube :youtube.com/lazycoders
