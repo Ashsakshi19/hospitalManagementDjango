@@ -231,6 +231,7 @@ def admin_dashboard_view(request):
 def reception_dashboard_view(request):
     #for both table in admin dashboard
     patients=models.Patient.objects.all().order_by('-id')
+    labcustomers=models.Labcustomer.objects.all().order_by('-id')
     #for two cards
 
     patientcount=models.Patient.objects.all().filter(status=True).count()
@@ -243,6 +244,7 @@ def reception_dashboard_view(request):
     pendinglabcustomercount=models.Labcustomer.objects.all().filter(status=False).count()
     mydict={
     'patients':patients,
+    'labcustomers':labcustomers,
     'patientcount':patientcount,
     'pendingpatientcount':pendingpatientcount,
     'appointmentcount':appointmentcount,
