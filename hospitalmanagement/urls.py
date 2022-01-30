@@ -103,6 +103,7 @@ urlpatterns +=[
 urlpatterns+=[
     path('reception-dashboard',views.reception_dashboard_view,name='reception-dashboard'),
     path('reception-patient', views.reception_patient_view,name='reception-patient'),
+    path('pathologist-labcustomer', views.pathologist_labcustomer_view,name='pathologist-labcustomer'),
     path('reception-labcustomer',views.reception_labcustomer_view,name='reception-labcustomer'),
     path('reception-view-patient', views.reception_view_patient_view,name='reception-view-patient'),
     path('delete-patient-from-hospital/<int:pk>', views.delete_patient_from_hospital_view,name='delete-patient-from-hospital'),
@@ -110,6 +111,9 @@ urlpatterns+=[
     path('reception-discharge-patient', views.reception_discharge_patient_view,name='reception-discharge-patient'),
     path('discharge-patient/<int:pk>', views.discharge_patient_view,name='discharge-patient'),
     path('download-pdf/<int:pk>', views.download_pdf_view,name='download-pdf'),
+    path('pathologist-write-labcustomer',views.pathologist_write_labcustomer_view,name='pathologist-write-labcustomer'),
+    path('write-labcustomer/<int:pk>',views.write_labcustomer_view,name='write-labcustomer'),
+    path('download-result/<int:pk>',views.download_result_view,name='download-result'),
 
     path('reception-appointment', views.reception_appointment_view,name='reception-appointment'),
     path('reception-view-appointment', views.reception_view_appointment_view,name='reception-view-appointment'),
@@ -128,11 +132,12 @@ urlpatterns +=[
     path('patient-book-appointment', views.patient_book_appointment_view,name='patient-book-appointment'),
     path('patient-view-appointment', views.patient_view_appointment_view,name='patient-view-appointment'),
     path('patient-discharge', views.patient_discharge_view,name='patient-discharge'),
-
+    path('labcustomer-write',views.labcustomer_write_view,name='labcustomer-write'),
 ]
 
 urlpatterns+=[
     path('labcustomer-dashboard',views.labcustomer_dashboard_view,name='labcustomer-dashboard'),
+    path('pathologist-dashboard',views.pathologist_dashboard_view,name='pathologist-dashboard'),
 ]
 
 urlpatterns+=[

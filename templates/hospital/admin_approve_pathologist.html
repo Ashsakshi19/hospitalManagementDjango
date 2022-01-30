@@ -44,7 +44,7 @@
         <td> <img src="{% static k.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
         <td>{{k.mobile}}</td>
         <td>{{k.address}}</td>
-        <td>{{k.position}}</td>
+        <td>{{k.role}}</td>
         <td><a class="btn btn-success btn-xs" href="{% url 'approve-pathologist' k.id  %}"><span class="glyphicon glyphicon-ok"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href="{% url 'reject-pathologist' k.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>

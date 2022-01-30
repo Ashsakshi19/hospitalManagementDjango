@@ -146,6 +146,22 @@ class PatientDischargeDetails(models.Model):
     OtherCharge=models.PositiveIntegerField(null=False)
     total=models.PositiveIntegerField(null=False)
 
+class LabcustomerReport(models.Model):
+    labcustomerId=models.PositiveIntegerField(null=True)
+    labcustomerName=models.CharField(max_length=40)
+    #assignedPathologistName=models.CharField(max_length=40)
+    address = models.CharField(max_length=40)
+    mobile = models.CharField(max_length=20,null=True)
+    test = models.CharField(max_length=100,null=True)
+
+    scheduledate=models.CharField(max_length=30,null=False)
+    #reportDate=models.charField(null=False)
+
+    testDetail=models.CharField(max_length=200)
+    testResult=models.CharField(max_length=200)
+    conclusion=models.CharField(max_length=200)
+    charge=models.PositiveIntegerField(null=False)
+
 
 #Developed By : sumit kumar
 #facebook : fb.com/sumit.luv

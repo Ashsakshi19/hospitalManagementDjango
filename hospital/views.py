@@ -292,7 +292,16 @@ def reception_dashboard_view(request):
     }
     return render(request,'hospital/reception_dashboard.html',context=mydict)
 
-
+@login_required(login_url='pathologistlogin')
+@user_passes_test(is_pathologist)
+def pathologist_dashboard_view(request):
+    pathologist=models.Pathologist.objects.get(user_id=request.user.id)
+    mydict={
+    'pathologist':pathologist,
+    'role':pathologist.role,
+    'address':pathologist.address,
+    }
+    return render(request,'hospital/pathologist_dashboard.html',context=mydict)
 
 
 # this view for sidebar click on admin page
@@ -564,6 +573,11 @@ def admin_patient_view(request):
 def reception_patient_view(request):
     return render(request,'hospital/reception_patient.html')
 
+@login_required(login_url='pathologistlogin')
+@user_passes_test(is_pathologist)
+def pathologist_labcustomer_view(request):
+    return render(request,'hospital/pathologist_labcustomer.html')
+
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
 def reception_labcustomer_view(request):
@@ -738,6 +752,13 @@ def reject_labcustomer_view(request,pk):
 
 
 #--------------------- FOR DISCHARGING PATIENT BY ADMIN START-------------------------
+@login_required(login_url='pathologistlogin')
+@user_passes_test(is_pathologist)
+def pathologist_write_labcustomer_view(request):
+    labcustomers=models.Labcustomer.objects.all().filter(status=True)
+    return render(request,'hospital/pathologist_write_labcustomer.html',{'labcustomers':labcustomers})
+
+
 
 @login_required(login_url='receptionlogin')
 @user_passes_test(is_reception)
@@ -793,6 +814,44 @@ def discharge_patient_view(request,pk):
         return render(request,'hospital/patient_final_bill.html',context=patientDict)
     return render(request,'hospital/patient_generate_bill.html',context=patientDict)
 
+@login_required(login_url='pathologistlogin')
+@user_passes_test(is_pathologist)
+def write_labcustomer_view(request,pk):
+    labcustomer=models.Labcustomer.objects.get(id=pk)# only how many day that is 2
+    labcustomerDict={
+        'labcustomerId':pk,
+        'name':labcustomer.get_name,
+        'mobile':labcustomer.mobile,
+        'address':labcustomer.address,
+        'test':labcustomer.test,
+        'scheduledate':labcustomer.scheduledate,
+    }
+    if request.method == 'POST':
+        reportDict ={
+            'testDetail':request.POST['testDetail'],
+            'testResult':request.POST['testResult'],
+            'conclusion':request.POST['conclusion'],
+            'charge':request.POST['charge']
+        }
+        labcustomerDict.update(reportDict)
+        #for updating to database patientDischargeDetails (pDD)
+        lP=models.LabcustomerReport()
+        lP.labcustomerId=pk
+        lP.labcustomerName=labcustomer.get_name
+        lP.address=labcustomer.address
+        lP.mobile=labcustomer.mobile
+        lP.test=labcustomer.test
+        lP.scheduledate=labcustomer.scheduledate
+        #pDD.releaseDate=date.today()
+        #pDD.daySpent=int(d)
+        lP.testDetail=request.POST['testDetail']
+        lP.testResult=request.POST['testResult']
+        lP.conclusion=request.POST['conclusion']
+        lP.charge=int(request.POST['charge'])
+        lP.save()
+        return render(request,'hospital/labcustomer_final_result.html',context=labcustomerDict)
+    return render(request,'hospital/labcustomer_generate_result.html',context=labcustomerDict)
+
 #--------------for discharge patient bill (pdf) download and printing
 import io
 from xhtml2pdf import pisa
@@ -830,6 +889,21 @@ def download_pdf_view(request,pk):
         'total':dischargeDetails[0].total,
     }
     return render_to_pdf('hospital/download_bill.html',dict)
+
+def download_result_view(request,pk):
+    customerReport=models.LabcustomerReport.objects.all().filter(labcustomerId=pk).order_by('-id')[:1]
+    dict={
+        'labcustomerName':customerReport[0].labcustomerName,
+        'address':customerReport[0].address,
+        'mobile':customerReport[0].mobile,
+        'test':customerReport[0].test,
+        'scheduledate':customerReport[0].scheduledate,
+        'testDetail':customerReport[0].testDetail,
+        'testResult':customerReport[0].testResult,
+        'conclusion':customerReport[0].conclusion,
+        'charge':customerReport[0].charge,
+    }
+    return render_to_pdf('hospital/download_result.html',dict)
 
 
 
@@ -1193,6 +1267,37 @@ def patient_discharge_view(request):
             'patientId':request.user.id,
         }
     return render(request,'hospital/patient_discharge.html',context=patientDict)
+
+
+@login_required(login_url='labcustomerlogin')
+@user_passes_test(is_labcustomer)
+def labcustomer_write_view(request):
+    labcustomer=models.Labcustomer.objects.get(user_id=request.user.id) #for profile picture of patient in sidebar
+    customerReport=models.LabcustomerReport.objects.all().filter(labcustomerId=labcustomer.id).order_by('-id')[:1]
+    labcustomerDict=None
+    if customerReport:
+        labcustomerDict ={
+        'is_resulted':True,
+        'labcustomer':labcustomer,
+        'labcustomerId':labcustomer.id,
+        'labcustomerName':labcustomer.get_name,
+        'address':labcustomer.address,
+        'mobile':labcustomer.mobile,
+        'test':labcustomer.test,
+        'scheduledate':labcustomer.scheduledate,
+        'testDetail':customerReport[0].testDetail,
+        'testResult':customerReport[0].testResult,
+        'conclusion':customerReport[0].conclusion,
+        'charge':customerReport[0].charge,
+        }
+        print(labcustomerDict)
+    else:
+        labcustomerDict={
+            'is_resulted':False,
+            'labcustomer':labcustomer,
+            'labcustomerId':request.user.id,
+        }
+    return render(request,'hospital/labcustomer_write.html',context=labcustomerDict)
 
 
 #------------------------ PATIENT RELATED VIEWS END ------------------------------
