@@ -147,6 +147,4 @@ urlpatterns+=[
 urlpatterns+=[
     path('gallery',views.gallery_view,name='gallery')
 ]
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
+
