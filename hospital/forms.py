@@ -14,7 +14,7 @@ class AdminSigupForm(forms.ModelForm):
         }
 
 
-#for student related form
+#for doctor related form
 class DoctorUserForm(forms.ModelForm):
     class Meta:
         model=User
@@ -54,7 +54,7 @@ class PathologistForm(forms.ModelForm):
         fields=['address','mobile','role','status','profile_pic']
 
 
-#for teacher related form
+#for patient related form
 class PatientUserForm(forms.ModelForm):
     class Meta:
         model=User
@@ -108,6 +108,4 @@ class ContactusForm(forms.Form):
 
 
 
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
+

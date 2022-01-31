@@ -15,26 +15,26 @@ def home_view(request):
     return render(request,'hospital/index.html')
 
 
-#for showing signup/login button for admin(by sumit)
+#for showing signup/login button for admin
 def adminclick_view(request):
     #if request.user.is_authenticated:
         #return HttpResponseRedirect('afterlogin')
     return render(request,'hospital/adminclick.html')
 
 
-#for showing signup/login button for doctor(by sumit)
+#for showing signup/login button for doctor
 def doctorclick_view(request):
     #if request.user.is_authenticated:
         #return HttpResponseRedirect('afterlogin')
     return render(request,'hospital/doctorclick.html')
 
-#for showing signup/login button for reception(by arjya)
+#for showing signup/login button for reception
 def receptionclick_view(request):
     #if request.user.is_authenticated:
         #return HttpResponseRedirect('afterlogin')
     return render(request, 'hospital/receptionclick.html')
 
-#for showing signup/login button for patient(by sumit)
+#for showing signup/login button for patient
 def patientclick_view(request):
     #if request.user.is_authenticated:
         #return HttpResponseRedirect('afterlogin')
@@ -163,7 +163,7 @@ def labcustomer_signup_view(request):
 
 
 
-#-----------for checking user is doctor , patient or admin(by sumit)
+#-----------for checking user is doctor , patient or admin
 def is_admin(user):
     return user.groups.filter(name='ADMIN').exists()
 def is_doctor(user):
@@ -834,7 +834,6 @@ def write_labcustomer_view(request,pk):
             'charge':request.POST['charge']
         }
         labcustomerDict.update(reportDict)
-        #for updating to database patientDischargeDetails (pDD)
         lP=models.LabcustomerReport()
         lP.labcustomerId=pk
         lP.labcustomerName=labcustomer.get_name
@@ -842,8 +841,6 @@ def write_labcustomer_view(request,pk):
         lP.mobile=labcustomer.mobile
         lP.test=labcustomer.test
         lP.scheduledate=labcustomer.scheduledate
-        #pDD.releaseDate=date.today()
-        #pDD.daySpent=int(d)
         lP.testDetail=request.POST['testDetail']
         lP.testResult=request.POST['testResult']
         lP.conclusion=request.POST['conclusion']

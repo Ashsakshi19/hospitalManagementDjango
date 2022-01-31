@@ -163,6 +163,3 @@ class LabcustomerReport(models.Model):
     charge=models.PositiveIntegerField(null=False)
 
 
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
